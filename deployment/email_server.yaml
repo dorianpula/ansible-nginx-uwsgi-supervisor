@@ -1,0 +1,8 @@
+---
+- hosts: all
+  sudo: yes
+  tasks:
+
+  # TODO PIP install mailsink into a virtualenv somewhere
+  - name: Install fake SMTP server for email development.
+    pip: name=mailsink use_mirrors=no

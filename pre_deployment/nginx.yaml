@@ -1,0 +1,29 @@
+---
+- hosts: all
+  sudo: yes
+  tasks:
+
+  # Next setup our webserver.
+  # TODO Extract variables into a single easy to configure place.
+  - name: Install nginx
+    apt: pkg=nginx-full update_cache=yes state=present
+
+  - name: Configure nginx
+    copy: src=config/nginx/rookeries-uwsgi.conf dest=/etc/nginx/sites-available
+
+  - name: Link the rookeries uwsgi file
+    file: state=link
+          src=/etc/nginx/sites-available/rookeries-uwsgi.conf
+          path=/etc/nginx/sites-enabled/rookeries-uwsgi.conf
+
+  - name: Unlink the default page
+    file: state=absent path=/etc/nginx/sites-enabled/default
+
+  - name: Run nginx service
+    command: service nginx restart
+
+  - name: Setup webapp deployment folder with the correct permissions
+    file: path=/var/www state=directory owner=vagrant group=www-data mode=0774
+
+  - name: Add vagrant user to www-data
+    user: name=vagrant append=yes groups=www-data

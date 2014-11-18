@@ -1,0 +1,7 @@
+---
+- hosts: all
+  sudo: yes
+  tasks:
+
+  # TODO Step 1 - PIP install uwsgi into virtualenv
+  # TODO Step 2 - Start uwsgi with the given configs.

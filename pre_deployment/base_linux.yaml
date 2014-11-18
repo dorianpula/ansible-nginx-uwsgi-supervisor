@@ -1,0 +1,12 @@
+---
+- hosts: all
+  sudo: yes
+  tasks:
+
+  - name: Install vim
+    apt: pkg=vim update_cache=yes state=present
+
+  - name: Configure vim
+    copy: src=config/base/_vimrc dest=/home/vagrant/.vimrc
+
+  # TODO Add update of apt cache + any extra repo setup here.

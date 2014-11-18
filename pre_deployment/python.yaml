@@ -1,0 +1,20 @@
+---
+- hosts: all
+  sudo: yes
+  tasks:
+
+  # Setup Python dependencies.
+  - name: Python Development
+    apt: pkg=python-dev update_cache=no state=present
+
+  - name: Bootstrap Python SetupTools
+    apt: pkg=python-setuptools update_cache=no state=present
+
+  - name: Bootstrap PIP using Setuptools
+    easy_install: pkg=pip state=present
+
+  - name: Install Python virtualenvwrapper
+    pip: name=virtualenvwrapper use_mirrors=no
+
+  - name: Configure Bash to use virtualenvwrapper
+    lineinfile: dest=/home/vagrant/.bashrc line="source virtualenvwrapper.sh"
