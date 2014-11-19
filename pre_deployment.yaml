@@ -1,6 +1,6 @@
 ---
-- hosts: all
-  sudo: yes
-  tasks:
-
-  # TODO Include all necessary playbooks
+- include: pre_deployment/base_linux.yaml
+- include: pre_deployment/python.yaml
+- include: pre_deployment/mysql_db.yaml
+- include: pre_deployment/nodejs.yaml
+- include: pre_deployment/nginx.yaml

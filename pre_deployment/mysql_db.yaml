@@ -1,18 +1,23 @@
 ---
 - hosts: all
   sudo: yes
+  vars:
+    databases:
+      rookeries:
+        username: rookeries
+        password: system_admin
   tasks:
 
-  # Setup MySQL dependencies.
-  # TODO Extract all variables into an easy to configure file.
-  - name: Install MySQL 5x server
-    apt: pkg=mysql-server update_cache=no state=present
+  - name: Setup MySQL 5 server + Python dependencies
+    apt: pkg={{ item }} state=present
+    with_items:
+      - mysql-server
+      - python-mysqldb
 
-  - name: Install mysqldb is installed.
-    apt: pkg=python-mysqldb update_cache=no state=present
+  - name: Setup MySQL databases for rookeries.
+    mysql_db: name={{ item.key }} state=present
+    with_dict: databases
 
-  - name: Setup MySQL database for rookeries.
-    mysql_db: name=rookeries state=present
-
-  - name: Setup MySQL database user for rookeries.
-    mysql_user: name=rookeries password=system_admin priv=rookeries:ALL
+  - name: Setup MySQL database users for rookeries.
+    mysql_user: name={{ item.value.username }} password={{ item.value.password }} priv={{ item.key }}:ALL
+    with_dict: databases

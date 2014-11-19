@@ -3,18 +3,20 @@
   sudo: yes
   tasks:
 
-  # Setup Python dependencies.
-  - name: Python Development
-    apt: pkg=python-dev update_cache=no state=present
-
-  - name: Bootstrap Python SetupTools
-    apt: pkg=python-setuptools update_cache=no state=present
+  - name: Setup Python setuptools dependencies
+    apt: pkg={{ item }} state=present
+    with_items:
+      - python-dev
+      - python-setuptools
 
   - name: Bootstrap PIP using Setuptools
-    easy_install: pkg=pip state=present
+    easy_install: name=pip
 
-  - name: Install Python virtualenvwrapper
-    pip: name=virtualenvwrapper use_mirrors=no
+  - name: Basic Python dependencies
+    pip: name={{ item }} use_mirrors=no
+    with_items:
+      - virtualenv
+      - virtualenvwrapper
 
-  - name: Configure Bash to use virtualenvwrapper
+  - name: Add virtualenvwrapper to bashrc
     lineinfile: dest=/home/vagrant/.bashrc line="source virtualenvwrapper.sh"

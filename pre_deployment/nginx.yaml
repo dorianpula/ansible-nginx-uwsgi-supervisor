@@ -1,20 +1,20 @@
 ---
 - hosts: all
   sudo: yes
+  vars:
+    rookeries_nginx_conf: rookeries-uwsgi.conf
   tasks:
 
-  # Next setup our webserver.
-  # TODO Extract variables into a single easy to configure place.
-  - name: Install nginx
-    apt: pkg=nginx-full update_cache=yes state=present
+  - name: Setup nginx webserver
+    apt: pkg=nginx-full state=present
 
   - name: Configure nginx
-    copy: src=config/nginx/rookeries-uwsgi.conf dest=/etc/nginx/sites-available
+    copy: src=../config/nginx/{{ rookeries_nginx_conf }} dest=/etc/nginx/sites-available
 
   - name: Link the rookeries uwsgi file
     file: state=link
-          src=/etc/nginx/sites-available/rookeries-uwsgi.conf
-          path=/etc/nginx/sites-enabled/rookeries-uwsgi.conf
+          src=/etc/nginx/sites-available/{{ rookeries_nginx_conf }}
+          path=/etc/nginx/sites-enabled/{{ rookeries_nginx_conf }}
 
   - name: Unlink the default page
     file: state=absent path=/etc/nginx/sites-enabled/default
@@ -22,8 +22,9 @@
   - name: Run nginx service
     command: service nginx restart
 
-  - name: Setup webapp deployment folder with the correct permissions
-    file: path=/var/www state=directory owner=vagrant group=www-data mode=0774
-
-  - name: Add vagrant user to www-data
-    user: name=vagrant append=yes groups=www-data
+  # TODO Verify if still required for pip package deployment
+#  - name: Setup webapp deployment folder with the correct permissions
+#    file: path=/var/www state=directory owner=vagrant group=www-data mode=0774
+#
+#  - name: Add vagrant user to www-data
+#    user: name=vagrant append=yes groups=www-data

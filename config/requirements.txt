@@ -1,0 +1,6 @@
+--allow-external mysql-connector-python
+--allow-unverified mysql-connector-python
+
+mysql-connector-python==1.1.6
+uwsgi==2.0
+mailsink==0.0.2

@@ -3,4 +3,14 @@
   sudo: yes
   tasks:
 
-  # TODO Install nodejs + coffeescript dependencies
+  - name: Setup nodejs + npm dependencies
+    apt: pkg={{ item }} state=present
+    with_items:
+        - nodejs
+        - npm
+
+  - name: Setup coffeescript + lessc dependency
+    npm: name={{ item }} global=yes state=present
+    with_items:
+        - coffee-script
+        - less
