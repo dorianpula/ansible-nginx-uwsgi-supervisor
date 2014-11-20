@@ -1,9 +1,20 @@
 ---
 - hosts: all
-  sudo: yes
+  vars:
+    web_server_home: /srv/www
+    rookeries_venv: "{{ web_server_home }}/rookeries"
+    rookeries_package: rookeries-0.4.0.tar.bz2
+    rookeries_uwsgi_ini: rookeries-uwsgi.ini
   tasks:
 
-  # TODO Step 1 - Setup virtualenv in target
-  # TODO Step 2 - Copy over package to target system
-  # TODO Step 3 - PIP install into virtualenv
+  - name: Upload rookeries package to web server home
+    copy: src=../../../dist/{{ rookeries_package }} dest={{ web_server_home }}
+
+  - name: PIP install rookeries package into target virtualenv
+    pip: name={{ rookeries_package }} virtualenv={{ rookeries_venv }} chdir={{ web_server_home }}
+
+  - name: PIP install extra MySQL python connector dependency
+    pip: name=mysql-connector-python virtualenv={{ rookeries_venv }} version=1.1.6
+         extra_args='--allow-external mysql-connector-python --allow-unverified mysql-connector-python'
+
   # TODO Step 4 - Setup environment variables on target system related to config.

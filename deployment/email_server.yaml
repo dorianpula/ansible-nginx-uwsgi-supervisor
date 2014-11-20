@@ -1,8 +1,13 @@
 ---
 - hosts: all
   sudo: yes
+  vars:
+      web_server_home: /srv/www
+      email_server_venv: "{{ web_server_home }}/mail_server"
   tasks:
 
-  # TODO PIP install mailsink into a virtualenv somewhere
-#  - name: Install fake SMTP server for email development.
-#    pip: name=mailsink use_mirrors=no
+    - name: PIP install mailsink test server into target virtualenv
+      pip: name=mailsink virtualenv={{ email_server_venv }} version=0.0.2
+
+#    - name: Launches the fake SMTP email daemon
+#      command: "{{ email_server_venv }}/bin/mailsinkd -w {{ email_web_server_port }} -s {{ email_server_port }}"

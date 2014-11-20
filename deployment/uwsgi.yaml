@@ -1,7 +1,16 @@
 ---
 - hosts: all
-  sudo: yes
+  vars:
+      web_server_home: /srv/www
+      uwsgi_venv: "{{ web_server_home }}/uwsgi"
+      rookeries_uwsgi_ini: rookeries-uwsgi.ini
   tasks:
 
-  # TODO Step 1 - PIP install uwsgi into virtualenv
-  # TODO Step 2 - Start uwsgi with the given configs.
+     - name: PIP install mailsink test server into target virtualenv
+       pip: name=uwsgi virtualenv={{ uwsgi_venv }} version=2.0
+
+     - name: Upload rookeries UWSGI configuration to web server home
+       copy: src=../config/uwsgi/{{ rookeries_uwsgi_ini }} dest={{ web_server_home }}
+
+#     - name: Launches the UWSGI daemon
+#       command: "{{ uwsgi_venv }}/bin/uwsgi --ini {{ web_server_home }}/{{ rookeries_uwsgi_ini }}"

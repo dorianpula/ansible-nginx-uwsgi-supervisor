@@ -16,7 +16,3 @@
     pip: name={{ item }} use_mirrors=no
     with_items:
       - virtualenv
-      - virtualenvwrapper
-
-  - name: Add virtualenvwrapper to bashrc
-    lineinfile: dest=/home/vagrant/.bashrc line="source virtualenvwrapper.sh"
