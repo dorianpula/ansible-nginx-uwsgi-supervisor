@@ -2,18 +2,21 @@
 - hosts: all
   vars:
       web_server_home: /srv/www
+      web_server_group: www-data
       uwsgi_venv: "{{ web_server_home }}/uwsgi"
+      uwsgi_config: "{{ web_server_home }}/config/uwsgi"
       rookeries_uwsgi_ini: rookeries-uwsgi.ini
   tasks:
 
      - name: PIP install UWSGI server into target virtualenv
        pip: name=uwsgi virtualenv={{ uwsgi_venv }} version=2.0
 
-     - name: PIP install supervisord into target virtualenv
-       pip: name=supervisor virtualenv={{ uwsgi_venv }} version=4.0.0-dev extra_args=--pre
+     - name: Setup webapp deployment configuration folder with the correct permissions
+       file: path={{ uwsgi_config }} state=directory
+             owner={{ ansible_env.SUDO_USER }} group={{ web_server_group }} mode=0774
 
      - name: Upload rookeries UWSGI configuration to web server home
-       copy: src=../config/uwsgi/{{ rookeries_uwsgi_ini }} dest={{ web_server_home }}
+       copy: src=../config/uwsgi/{{ rookeries_uwsgi_ini }} dest={{ uwsgi_config }}
 
      # TODO Clean up configuration placement
 

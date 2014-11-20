@@ -28,5 +28,9 @@
     file: path={{ web_server_home }} state=directory
           owner={{ ansible_env.SUDO_USER }} group={{ web_server_group }} mode=0774
 
+  - name: Setup webapp deployment configuration folder with the correct permissions
+    file: path={{ web_server_home }}/config state=directory
+          owner={{ ansible_env.SUDO_USER }} group={{ web_server_group }} mode=0774
+
   - name: Add vagrant user to www-data
     user: name={{ ansible_env.SUDO_USER }} append=yes groups={{ web_server_group }}

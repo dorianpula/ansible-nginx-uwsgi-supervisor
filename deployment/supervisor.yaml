@@ -1,0 +1,20 @@
+---
+- hosts: all
+  vars:
+      web_server_home: /srv/www
+      web_server_group: www-data
+      supervisor_config: "{{ web_server_home }}/config/supervisor"
+      supervisor_venv: "{{ web_server_home }}/supervisor"
+  tasks:
+
+     - name: PIP install supervisor into target virtualenv
+       pip: name=supervisor virtualenv={{ supervisor_venv }} version=3.1.3 extra_args=--pre
+
+     - name: Setup webapp deployment configuration folder with the correct permissions
+       file: path={{ supervisor_config }} state=directory
+             owner={{ ansible_env.SUDO_USER }} group={{ web_server_group }} mode=0774
+
+     - name: Upload rookeries supervisor configuration to web server home
+       copy: src=../config/supervisor/supervisor.conf dest={{ supervisor_config }}
+
+     # TODO Control supervisor with supervisorctl + ansible - http://docs.ansible.com/supervisorctl_module.html
