@@ -1,4 +1,5 @@
 ---
 - include: deployment/rookeries_install.yaml
-- include: deployment/email_server.yaml
 - include: deployment/uwsgi.yaml
+- include: deployment/email_server.yaml
+- include: deployment/supervisor.yaml

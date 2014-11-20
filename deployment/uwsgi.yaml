@@ -6,11 +6,16 @@
       rookeries_uwsgi_ini: rookeries-uwsgi.ini
   tasks:
 
-     - name: PIP install mailsink test server into target virtualenv
+     - name: PIP install UWSGI server into target virtualenv
        pip: name=uwsgi virtualenv={{ uwsgi_venv }} version=2.0
+
+     - name: PIP install supervisord into target virtualenv
+       pip: name=supervisor virtualenv={{ uwsgi_venv }} version=4.0.0-dev extra_args=--pre
 
      - name: Upload rookeries UWSGI configuration to web server home
        copy: src=../config/uwsgi/{{ rookeries_uwsgi_ini }} dest={{ web_server_home }}
+
+     # TODO Clean up configuration placement
 
 #     - name: Launches the UWSGI daemon
 #       command: "{{ uwsgi_venv }}/bin/uwsgi --ini {{ web_server_home }}/{{ rookeries_uwsgi_ini }}"

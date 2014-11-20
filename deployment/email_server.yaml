@@ -1,6 +1,5 @@
 ---
 - hosts: all
-  sudo: yes
   vars:
       web_server_home: /srv/www
       email_server_venv: "{{ web_server_home }}/mail_server"

@@ -1,0 +1,15 @@
+---
+- hosts: all
+  vars:
+      web_server_home: /srv/www
+      supervisor_venv: "{{ web_server_home }}/supervisord"
+  tasks:
+
+     - name: PIP install supervisor into target virtualenv
+       pip: name=supervisor virtualenv={{ supervisor }} version=4.0.0-dev extra_args=--pre
+
+     - name: Upload rookeries supervisor configuration to web server home
+       copy: src=../config/supervisor/supervisor.conf dest={{ web_server_home }}
+
+     # TODO Clean up configuration placement
+     # TODO Control supervisor with supervisorctl + ansible - http://docs.ansible.com/supervisorctl_module.html

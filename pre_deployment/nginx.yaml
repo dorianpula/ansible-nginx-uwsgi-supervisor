@@ -22,7 +22,7 @@
     file: state=absent path=/etc/nginx/sites-enabled/default
 
   - name: Run nginx service
-    command: service nginx restart
+    service: name=nginx state=restarted
 
   - name: Setup webapp deployment folder with the correct permissions
     file: path={{ web_server_home }} state=directory
