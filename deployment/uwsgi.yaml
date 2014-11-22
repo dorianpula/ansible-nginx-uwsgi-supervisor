@@ -1,5 +1,6 @@
 ---
 - hosts: all
+  sudo: yes
   vars:
       web_server_home: /srv/www
       web_server_group: www-data
@@ -17,8 +18,3 @@
 
      - name: Upload rookeries UWSGI configuration to web server home
        copy: src=../config/uwsgi/{{ rookeries_uwsgi_ini }} dest={{ uwsgi_config }}
-
-     # TODO Clean up configuration placement
-
-#     - name: Launches the UWSGI daemon
-#       command: "{{ uwsgi_venv }}/bin/uwsgi --ini {{ web_server_home }}/{{ rookeries_uwsgi_ini }}"

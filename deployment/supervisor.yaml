@@ -1,5 +1,6 @@
 ---
 - hosts: all
+  sudo: yes
   vars:
       web_server_home: /srv/www
       web_server_group: www-data
@@ -17,4 +18,24 @@
      - name: Upload rookeries supervisor configuration to web server home
        copy: src=../config/supervisor/supervisor.conf dest={{ supervisor_config }}
 
-     # TODO Control supervisor with supervisorctl + ansible - http://docs.ansible.com/supervisorctl_module.html
+     - name: Link supervisor binary into /usr/local/bin
+       file: src={{ supervisor_venv }}/bin/{{ item }} dest=/usr/local/bin/{{ item }} state=link
+       with_items:
+          - supervisord
+          - supervisorctl
+
+     - name: Check if supervisord is running
+       shell: pgrep supervisor
+       ignore_errors: on
+       changed_when: off
+       register: supervisor_running
+
+     - name: Running supervisord
+       shell: "{{ supervisor_venv }}/bin/supervisord -c {{ supervisor_config }}/supervisor.conf"
+       when: supervisor_running|failed
+
+     - name: Start up the mailsink program
+       supervisorctl: name=mailsink state=restarted config={{ supervisor_config }}/supervisor.conf
+
+     - name: Start up the uwsgi program
+       supervisorctl: name=uwsgi state=restarted config={{ supervisor_config }}/supervisor.conf
