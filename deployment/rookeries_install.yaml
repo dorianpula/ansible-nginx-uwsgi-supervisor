@@ -17,4 +17,8 @@
     pip: name=mysql-connector-python virtualenv={{ rookeries_venv }} version=1.1.6
          extra_args='--allow-external mysql-connector-python --allow-unverified mysql-connector-python'
 
+  # TODO This is problematic, and maybe a good sign why deploying a web app via pip isn't the wisest idea.
+  - name: Link rookeries static pages to top-level of virtualenv
+    file: src={{ rookeries_venv }}/lib/python2.7/site-packages/rookeries/ dest={{ rookeries_venv }}/rookeries state=link
+
   # TODO Step 4 - Setup environment variables on target system related to config.

@@ -34,3 +34,7 @@
 
   - name: Add vagrant user to www-data
     user: name={{ ansible_env.SUDO_USER }} append=yes groups={{ web_server_group }}
+
+  - name: Change permissions on nginx logs
+    file: path=/var/log/nginx state=directory
+          owner={{ web_server_group }} group={{ web_server_group }} mode=0766

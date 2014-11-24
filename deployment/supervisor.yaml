@@ -24,6 +24,7 @@
           - supervisord
           - supervisorctl
 
+     # TODO Separate out starting and stopping of supervisord + supervisorctl outside of provisioning
      - name: Check if supervisord is running
        shell: pgrep supervisor
        ignore_errors: on
