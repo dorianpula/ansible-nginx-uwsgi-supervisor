@@ -3,9 +3,6 @@
   sudo: yes
   tasks:
 
-  - name: Update and upgrade system
-    apt: update_cache=yes upgrade=full
-
   - name: Install vim
     apt: pkg=vim state=present
 

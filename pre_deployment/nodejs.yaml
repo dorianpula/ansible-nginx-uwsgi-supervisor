@@ -9,6 +9,9 @@
         - nodejs
         - npm
 
+  - name: link nodejs binary correctly
+    file: src=/usr/bin/nodejs dest=/usr/bin/node state=link
+
   - name: Setup coffeescript + lessc dependency
     npm: name={{ item }} global=yes state=present
     with_items:
