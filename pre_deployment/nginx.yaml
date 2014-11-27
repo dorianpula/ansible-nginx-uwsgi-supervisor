@@ -4,7 +4,6 @@
   vars:
     rookeries_nginx_conf: rookeries-uwsgi.conf
     web_server_group: www-data
-    web_server_home: /srv/www
   tasks:
 
   - name: Setup nginx webserver
@@ -23,17 +22,6 @@
 
   - name: Run nginx service
     service: name=nginx state=restarted
-
-  - name: Setup webapp deployment folder with the correct permissions
-    file: path={{ web_server_home }} state=directory
-          owner={{ ansible_env.SUDO_USER }} group={{ web_server_group }} mode=0774
-
-  - name: Setup webapp deployment configuration folder with the correct permissions
-    file: path={{ web_server_home }}/config state=directory
-          owner={{ ansible_env.SUDO_USER }} group={{ web_server_group }} mode=0774
-
-  - name: Add vagrant user to www-data
-    user: name={{ ansible_env.SUDO_USER }} append=yes groups={{ web_server_group }}
 
   - name: Change permissions on nginx logs
     file: path=/var/log/nginx state=directory

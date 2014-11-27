@@ -13,6 +13,6 @@
     easy_install: name=pip
 
   - name: Basic Python dependencies
-    pip: name={{ item }} use_mirrors=no
+    pip: name={{ item }}
     with_items:
       - virtualenv

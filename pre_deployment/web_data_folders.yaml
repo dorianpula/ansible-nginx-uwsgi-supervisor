@@ -1,0 +1,22 @@
+---
+- hosts: all
+  sudo: yes
+  vars:
+    user: "{{ ansible_env.SUDO_USER }}"
+    web_app_home: /srv/www
+    web_server_group: www-data
+
+  tasks:
+  - name: setup webapp deployment folder with the correct permissions
+    file: path={{ web_app_home }} state=directory owner={{ web_server_group }} group=www-data mode=0774
+
+  - name: setup webapp deployment configuration + log folders with the correct permissions
+    file: path={{ web_app_home }}/{{ item }} state=directory
+          owner={{ web_server_group }} group={{ web_server_group }} mode=0774
+    with_items:
+        - config
+        - logs
+        - logs/nginx
+
+  - name: add user to www-data
+    user: name={{ user }} append=yes groups={{ web_server_group }}
