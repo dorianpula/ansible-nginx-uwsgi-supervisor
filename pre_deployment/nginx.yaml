@@ -2,7 +2,7 @@
 - hosts: all
   sudo: yes
   vars:
-    rookeries_nginx_conf: rookeries-uwsgi.conf
+    rookeries_nginx_conf: rookeries-uwsgi_nginx.conf
     web_server_group: www-data
   tasks:
 
