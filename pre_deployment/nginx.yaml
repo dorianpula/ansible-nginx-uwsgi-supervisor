@@ -23,9 +23,14 @@
   - name: restart nginx
     service: name=nginx state=restarted
 
-  - name: set permissions on nginx log directory
-    file: path=/var/log/nginx state=directory
-          owner={{ web_server_group }} group={{ web_server_group }} mode=0755
+  - name: set permissions on nginx config + log directories
+    file: path={{ item }} state=directory
+          group={{ web_server_group }} mode=0755
+    with_items:
+        - /var/log/nginx
+        - /etc/nginx
+        - /etc/nginx/sites-available
+        - /etc/nginx/sites-enabled
 
   - name: set permissions on nginx logs
     file: path=/var/log/nginx/{{ item }} state=file
