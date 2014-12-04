@@ -15,8 +15,20 @@
           owner={{ web_server_group }} group={{ web_server_group }} mode=0774
     with_items:
         - config
+        - config/uwsgi
         - logs
-        - logs/nginx
+        - virtualenvs
+
+  - name: setup webapp deployment configuration + log folders with the correct permissions
+    file: state=link
+          path={{ web_app_home }}/{{ item.value }}
+          src={{ item.key }}
+          owner={{ web_server_group }} group={{ web_server_group }} mode=0774
+    with_dict:
+        /etc/nginx: config/nginx
+        /etc/supervisor: config/supervisor
+        /var/log/nginx: logs/nginx
+        /var/log/supervisor: logs/supervisor
 
   - name: add user to www-data
     user: name={{ user }} append=yes groups={{ web_server_group }}

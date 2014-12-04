@@ -3,7 +3,7 @@
   sudo: yes
   tasks:
 
-  - name: Setup nodejs + npm dependencies
+  - name: install nodejs + npm dependencies
     apt: pkg={{ item }} state=present
     with_items:
         - nodejs
@@ -12,7 +12,7 @@
   - name: link nodejs binary correctly
     file: src=/usr/bin/nodejs dest=/usr/bin/node state=link
 
-  - name: Setup coffeescript + lessc dependency
+  - name: install coffeescript + less dependencies
     npm: name={{ item }} global=yes state=present
     with_items:
         - coffee-script

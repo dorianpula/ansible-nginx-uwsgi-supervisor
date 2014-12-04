@@ -2,6 +2,9 @@
 - include: pre_deployment/base_linux.yaml
 - include: pre_deployment/python.yaml
 - include: pre_deployment/mysql_db.yaml
+- include: pre_deployment/nginx.yaml
+- include: pre_deployment/supervisor.yaml
 - include: pre_deployment/web_data_folders.yaml
 - include: pre_deployment/nodejs.yaml
-- include: pre_deployment/nginx.yaml
+
+# TODO Add in globally defined values for webapp and virtualenv folders

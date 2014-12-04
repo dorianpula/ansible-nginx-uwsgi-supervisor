@@ -3,16 +3,14 @@
   sudo: yes
   tasks:
 
-  - name: Setup Python setuptools dependencies
+  - name: install Python setuptools dependencies
     apt: pkg={{ item }} state=present
     with_items:
       - python-dev
       - python-setuptools
 
-  - name: Bootstrap PIP using Setuptools
+  - name: bootstrap PIP using setuptools
     easy_install: name=pip
 
-  - name: Basic Python dependencies
-    pip: name={{ item }}
-    with_items:
-      - virtualenv
+  - name: install Python virtualenv
+    pip: name=virtualenv

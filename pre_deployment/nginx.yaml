@@ -6,23 +6,30 @@
     web_server_group: www-data
   tasks:
 
-  - name: Setup nginx webserver
+  - name: install nginx webserver
     apt: pkg=nginx-full state=present
 
-  - name: Configure nginx
+  - name: configure nginx
     copy: src=../config/nginx/{{ rookeries_nginx_conf }} dest=/etc/nginx/sites-available
 
-  - name: Link the rookeries uwsgi file
+  - name: enable the rookeries nginx configuration
     file: state=link
           src=/etc/nginx/sites-available/{{ rookeries_nginx_conf }}
           path=/etc/nginx/sites-enabled/{{ rookeries_nginx_conf }}
 
-  - name: Unlink the default page
+  - name: disable the default page configuration
     file: state=absent path=/etc/nginx/sites-enabled/default
 
-  - name: Run nginx service
+  - name: restart nginx
     service: name=nginx state=restarted
 
-  - name: Change permissions on nginx logs
+  - name: set permissions on nginx log directory
     file: path=/var/log/nginx state=directory
-          owner={{ web_server_group }} group={{ web_server_group }} mode=0766
+          owner={{ web_server_group }} group={{ web_server_group }} mode=0755
+
+  - name: set permissions on nginx logs
+    file: path=/var/log/nginx/{{ item }} state=file
+          owner={{ web_server_group }} group={{ web_server_group }} mode=0644
+    with_items:
+        - access.log
+        - error.log

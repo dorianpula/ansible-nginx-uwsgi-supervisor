@@ -3,8 +3,8 @@
   sudo: yes
   tasks:
 
-  - name: Install vim
+  - name: install vim
     apt: pkg=vim state=present
 
-  - name: Configure vim
+  - name: configure vim
     copy: src=../config/base/_vimrc dest=/home/vagrant/.vimrc

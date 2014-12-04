@@ -1,0 +1,30 @@
+---
+- hosts: all
+  sudo: yes
+  vars:
+      web_server_group: www-data
+      supervisor_configs:
+        - mailsink_supervisor.conf
+        - rookeries_supervisor.conf
+  tasks:
+
+     - name: install supervisord
+       apt: name=supervisor state=present
+
+     - name: set permissions on supervisor config and log directories
+       file: path={{ item }} group={{ web_server_group }} state=directory mode=0755
+       with_items:
+          - /etc/supervisor
+          - /etc/supervisor/conf.d
+          - /var/log/supervisor
+
+     - name: modify supervisor configuration
+       ini_file: dest=/etc/supervisor/supervisord.conf section=unix_http_server
+                 option={{ item.key }} value={{ item.value }}
+       with_dict:
+           chmod: "0770"
+           chown: root:www-data
+
+     - name: upload rookeries supervisor configuration to web server home
+       copy: src=../config/supervisor/{{ item }} dest=/etc/supervisor/conf.d
+       with_items: supervisor_configs

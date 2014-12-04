@@ -3,18 +3,23 @@
   sudo: yes
   vars:
     web_server_home: /srv/www
-    rookeries_venv: "{{ web_server_home }}/rookeries"
+    web_server_group: www-data
+    rookeries_venv: "{{ web_server_home }}/virtualenvs/rookeries"
     rookeries_package: rookeries-0.4.0.tar.bz2
   tasks:
 
   - name: upload + extract rookeries package to web server home
-    unarchive: src=../../../{{ rookeries_package }} dest={{ web_server_home }}
+    unarchive: src=../../../{{ rookeries_package }} dest={{ web_server_home }}/
 
-  - name: pip install rookeries dependencies into target virtualenv
+  - name: install rookeries dependencies
     pip: requirements=rookeries_webapp/requirements.txt virtualenv={{ rookeries_venv }} chdir={{ web_server_home }}
 
-  - name: PIP install extra MySQL python connector dependency
+  - name: install extra MySQL python connector dependency
     pip: name=mysql-connector-python virtualenv={{ rookeries_venv }} version=1.1.6
          extra_args='--allow-external mysql-connector-python --allow-unverified mysql-connector-python'
+
+  - name: fix permissions on extracted web app
+    file: path={{ web_server_home }}/rookeries_webapp owner={{ web_server_group }} group={{ web_server_group }}
+          state=directory recurse=yes
 
   # TODO Step 4 - Setup environment variables on target system related to config.

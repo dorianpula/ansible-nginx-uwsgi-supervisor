@@ -1,9 +1,13 @@
 ---
 - hosts: all
+  sudo: yes
   vars:
       web_server_home: /srv/www
-      email_server_venv: "{{ web_server_home }}/mail_server"
+      email_server_venv: "{{ web_server_home }}/virtualenvs/mail_server"
   tasks:
 
-    - name: PIP install mailsink test server into target virtualenv
+    - name: install mailsink test server into target virtualenv
       pip: name=mailsink virtualenv={{ email_server_venv }} version=0.0.2
+
+    - name: restart up the mailsink program
+      supervisorctl: name=mailsink state=restarted config=/etc/supervisor/supervisor.conf
