@@ -1,7 +1,0 @@
-:syntax on
-:set number
-:set textwidth=125
-:set autoindent
-:set shiftwidth=4
-:set nobackup
-:set nowritebackup
