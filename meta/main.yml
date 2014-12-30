@@ -1,7 +1,7 @@
 ---
 galaxy_info:
   author: Dorian Pula
-  description: 
+  description: NGINX UWSGI and supervisor role
   company: Amber Penguin Software
   # Some suggested licenses:
   # - BSD (default)
@@ -70,7 +70,7 @@ galaxy_info:
   #  - 9.1
   #  - 9.2
   - name: Ubuntu
-  #  versions:
+    versions:
   #  - all
   #  - lucid
   #  - maverick
