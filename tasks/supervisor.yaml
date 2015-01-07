@@ -1,6 +1,5 @@
 ---
-- hosts: all
-  sudo: yes
+- sudo: yes
   vars:
       web_server_group: www-data
       supervisor_configs:

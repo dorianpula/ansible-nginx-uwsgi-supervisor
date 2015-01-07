@@ -1,6 +1,5 @@
 ---
-- hosts: all
-  sudo: yes
+- sudo: yes
   vars:
     rookeries_nginx_conf: rookeries-uwsgi_nginx.conf
     web_server_group: www-data

@@ -1,6 +1,5 @@
 ---
-- hosts: all
-  vars:
+- vars:
       web_server_home: /srv/www
       web_server_group: www-data
       uwsgi_venv: "{{ web_server_home }}/virtualenvs/uwsgi"

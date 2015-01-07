@@ -1,16 +1,15 @@
 ---
-- hosts: all
+- name: install Python setuptools dependencies
   sudo: yes
-  tasks:
+  apt: pkg={{ item }} state=present
+  with_items:
+    - python-dev
+    - python-setuptools
 
-  - name: install Python setuptools dependencies
-    apt: pkg={{ item }} state=present
-    with_items:
-      - python-dev
-      - python-setuptools
+- name: bootstrap PIP using setuptools
+  sudo: yes
+  easy_install: name=pip
 
-  - name: bootstrap PIP using setuptools
-    easy_install: name=pip
-
-  - name: install Python virtualenv
-    pip: name=virtualenv
+- name: install Python virtualenv
+  sudo: yes
+  pip: name=virtualenv
