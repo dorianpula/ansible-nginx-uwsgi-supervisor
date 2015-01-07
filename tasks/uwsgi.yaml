@@ -1,17 +1,12 @@
 ---
-- vars:
-      web_server_home: /srv/www
-      web_server_group: www-data
-      uwsgi_venv: "{{ web_server_home }}/virtualenvs/uwsgi"
-      uwsgi_config: "{{ web_server_home }}/config/uwsgi"
-      rookeries_uwsgi_ini: rookeries-uwsgi.ini
-  tasks:
+- name: install uwsgi server
+  pip: name=uwsgi virtualenv={{ uwsgi_venv }} version=2.0
+  sudo: yes
 
-     - name: install uwsgi server
-       pip: name=uwsgi virtualenv={{ uwsgi_venv }} version=2.0
+- name: upload rookeries configuration
+  copy: src=../config/uwsgi/{{ rookeries_uwsgi_ini }} dest={{ uwsgi_config }}
+  sudo: yes
 
-     - name: upload rookeries configuration
-       copy: src=../config/uwsgi/{{ rookeries_uwsgi_ini }} dest={{ uwsgi_config }}
-
-     - name: restart uwsgi server
-       supervisorctl: name=uwsgi state=restarted config=/etc/supervisor/supervisor.conf
+- name: restart uwsgi server
+  supervisorctl: name=uwsgi state=restarted config=/etc/supervisor/supervisor.conf
+  sudo: yes

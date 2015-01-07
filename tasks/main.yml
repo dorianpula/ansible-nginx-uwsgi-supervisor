@@ -5,5 +5,3 @@
 - include: supervisor.yaml
 - include: web_data_folders.yaml
 - include: uwsgi.yaml
-
-# TODO Add in globally defined values for webapp and virtualenv folders

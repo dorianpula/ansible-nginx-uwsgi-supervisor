@@ -1,39 +1,39 @@
 ---
-- sudo: yes
-  vars:
-    rookeries_nginx_conf: rookeries-uwsgi_nginx.conf
-    web_server_group: www-data
-  tasks:
+- name: install nginx webserver
+  apt: pkg=nginx-full state=present
+  sudo: yes
 
-  - name: install nginx webserver
-    apt: pkg=nginx-full state=present
+- name: configure nginx
+  copy: src=../config/nginx/{{ rookeries_nginx_conf }} dest=/etc/nginx/sites-available
 
-  - name: configure nginx
-    copy: src=../config/nginx/{{ rookeries_nginx_conf }} dest=/etc/nginx/sites-available
+- name: enable the rookeries nginx configuration
+  file: state=link
+        src=/etc/nginx/sites-available/{{ rookeries_nginx_conf }}
+        path=/etc/nginx/sites-enabled/{{ rookeries_nginx_conf }}
+  sudo: yes
 
-  - name: enable the rookeries nginx configuration
-    file: state=link
-          src=/etc/nginx/sites-available/{{ rookeries_nginx_conf }}
-          path=/etc/nginx/sites-enabled/{{ rookeries_nginx_conf }}
+- name: disable the default page configuration
+  file: state=absent path=/etc/nginx/sites-enabled/default
+  sudo: yes
 
-  - name: disable the default page configuration
-    file: state=absent path=/etc/nginx/sites-enabled/default
+- name: restart nginx
+  service: name=nginx state=restarted
+  sudo: yes
 
-  - name: restart nginx
-    service: name=nginx state=restarted
+- name: set permissions on nginx config + log directories
+  file: path={{ item }} state=directory
+        group={{ web_server_group }} mode=0755
+  with_items:
+      - /var/log/nginx
+      - /etc/nginx
+      - /etc/nginx/sites-available
+      - /etc/nginx/sites-enabled
+  sudo: yes
 
-  - name: set permissions on nginx config + log directories
-    file: path={{ item }} state=directory
-          group={{ web_server_group }} mode=0755
-    with_items:
-        - /var/log/nginx
-        - /etc/nginx
-        - /etc/nginx/sites-available
-        - /etc/nginx/sites-enabled
-
-  - name: set permissions on nginx logs
-    file: path=/var/log/nginx/{{ item }} state=file
-          owner={{ web_server_group }} group={{ web_server_group }} mode=0644
-    with_items:
-        - access.log
-        - error.log
+- name: set permissions on nginx logs
+  file: path=/var/log/nginx/{{ item }} state=file
+        owner={{ web_server_group }} group={{ web_server_group }} mode=0644
+  with_items:
+      - access.log
+      - error.log
+  sudo: yes
