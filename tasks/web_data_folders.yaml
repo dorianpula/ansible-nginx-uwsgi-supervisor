@@ -13,7 +13,7 @@
       - virtualenvs
   sudo: yes
 
-- name: setup webapp deployment configuration + log folders with the correct permissions
+- name: link remote folders with webapp home folder
   file: state=link
         path={{ web_app_home }}/{{ item.value }}
         src={{ item.key }}
