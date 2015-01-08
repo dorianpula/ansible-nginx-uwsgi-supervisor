@@ -20,6 +20,6 @@
   sudo: yes
 
 - name: upload rookeries supervisor configuration to web server home
-  copy: src=../config/supervisor/{{ item }} dest=/etc/supervisor/conf.d
+  copy: src=supervisor/{{ item }} dest=/etc/supervisor/conf.d
   with_items: supervisor_configs
   sudo: yes

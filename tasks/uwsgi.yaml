@@ -4,7 +4,7 @@
   sudo: yes
 
 - name: upload rookeries configuration
-  copy: src=../config/uwsgi/{{ rookeries_uwsgi_ini }} dest={{ uwsgi_config }}
+  copy: src=uwsgi/{{ rookeries_uwsgi_ini }} dest={{ uwsgi_config }}
   sudo: yes
 
 - name: restart uwsgi server
