@@ -3,13 +3,14 @@
   apt: pkg=nginx-full state=present
   sudo: yes
 
+# TODO Look at using templated configuration
 - name: configure nginx
-  copy: src=nginx/{{ rookeries_nginx_conf }} dest=/etc/nginx/sites-available
+  copy: src=nginx/{{ app_nginx_conf }} dest=/etc/nginx/sites-available
 
-- name: enable the rookeries nginx configuration
+- name: enable the copied over nginx configuration
   file: state=link
-        src=/etc/nginx/sites-available/{{ rookeries_nginx_conf }}
-        path=/etc/nginx/sites-enabled/{{ rookeries_nginx_conf }}
+        src=/etc/nginx/sites-available/{{ app_nginx_conf }}
+        path=/etc/nginx/sites-enabled/{{ app_nginx_conf }}
   sudo: yes
 
 - name: disable the default page configuration

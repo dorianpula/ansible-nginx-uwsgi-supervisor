@@ -25,6 +25,6 @@
       /var/log/supervisor: logs/supervisor
   sudo: yes
 
-- name: add user to www-data
+- name: add user to webserver group
   user: name={{ user }} append=yes groups={{ web_server_group }}
   sudo: yes

@@ -3,8 +3,8 @@
   pip: name=uwsgi virtualenv={{ uwsgi_venv }} version=2.0
   sudo: yes
 
-- name: upload rookeries configuration
-  copy: src=uwsgi/{{ rookeries_uwsgi_ini }} dest={{ uwsgi_config }}
+- name: upload app's uwsgi configuration
+  copy: src=uwsgi/{{ uwsgi_ini }} dest={{ uwsgi_config }}
   sudo: yes
 
 - name: restart uwsgi server

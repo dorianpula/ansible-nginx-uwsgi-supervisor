@@ -2,9 +2,14 @@
 # vars file for ansible-nginx-uwsgi-supervisor
 
 # TODO Make more configurable and flexible
-# NGINX
-rookeries_nginx_conf: rookeries-uwsgi_nginx.conf
+
+# Web app home + group
+web_app_home: /srv/www
 web_server_group: www-data
+user: "{{ ansible_env.SUDO_USER }}"
+
+# NGINX
+app_nginx_conf: rookeries-uwsgi_nginx.conf
 
 # Supervisor
 # TODO Allow for multiple supervisord configurations
@@ -12,13 +17,7 @@ supervisor_configs:
 #   - mailsink_supervisor.conf
    - rookeries_supervisor.conf
 
-web_server_home: /srv/www
-
 # UWSGI
-uwsgi_venv: "{{ web_server_home }}/virtualenvs/uwsgi"
-uwsgi_config: "{{ web_server_home }}/config/uwsgi"
-rookeries_uwsgi_ini: rookeries-uwsgi.ini
-
-# Web folders
-user: "{{ ansible_env.SUDO_USER }}"
-web_app_home: /srv/www
+uwsgi_venv: "{{ web_app_home }}/virtualenvs/uwsgi"
+uwsgi_config: "{{ web_app_home }}/config/uwsgi"
+uwsgi_ini: rookeries-uwsgi.ini
