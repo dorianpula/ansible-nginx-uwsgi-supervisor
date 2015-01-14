@@ -1,12 +1,12 @@
 ---
-- name: install python dev dependencies
+- name: install python dev
   sudo: yes
   apt: pkg={{ item }} state=present
   with_items:
     - python-dev
     - python-setuptools
 
-- name: bootstrap pip using setuptools
+- name: install pip
   sudo: yes
   easy_install: name=pip
 

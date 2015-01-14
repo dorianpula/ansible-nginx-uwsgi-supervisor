@@ -3,8 +3,8 @@
   pip: name=uwsgi virtualenv={{ uwsgi_venv }} version=2.0
   sudo: yes
 
-- name: upload app's uwsgi configuration
-  copy: src=uwsgi/{{ uwsgi_ini }} dest={{ uwsgi_config }}
+- name: configure app on uwsgi server
+  template: src=uwsgi/app_uwsgi.ini dest={{ uwsgi_config }}/{{ uwsgi_app_ini }}
   sudo: yes
 
 - name: restart uwsgi server

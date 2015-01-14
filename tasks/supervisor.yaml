@@ -19,7 +19,6 @@
       chown: root:{{ web_server_group }}
   sudo: yes
 
-- name: upload rookeries supervisor configuration to web server home
-  copy: src=supervisor/{{ item }} dest=/etc/supervisor/conf.d
-  with_items: supervisor_configs
+- name: upload supervisor configuration to web server home
+  template: src=supervisor/app_supervisor.conf dest=/etc/supervisor/conf.d/{{ supervisor_app_config }}
   sudo: yes

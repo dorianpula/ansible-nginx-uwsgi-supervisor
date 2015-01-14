@@ -1,23 +1,29 @@
 ---
 # vars file for ansible-nginx-uwsgi-supervisor
 
-# TODO Make more configurable and flexible
-
-# Web app home + group
-web_app_home: /srv/www
+# Web root paths + app name + home
+app_name: rookeries
+web_root_path: /srv/www
 web_server_group: www-data
-user: "{{ ansible_env.SUDO_USER }}"
+web_user: "{{ ansible_env.SUDO_USER }}"
+app_home: "{{ web_root_path }}/{{ app_name }}_webapp"
+
+# Virtualenvs
+virtualenv_root: "{{ web_root_path }}/virtualenvs"
+uwsgi_venv: "{{ virtualenv_root }}/uwsgi"
+app_venv: "{{ virtualenv_root }}/{{ app_name }}"
 
 # NGINX
-app_nginx_conf: rookeries-uwsgi_nginx.conf
+nginx_hostname: localhost
+nginx_app_static: "{{ app_home }}/{{ app_name }}/static/"
+nginx_app_conf: "{{ app_name }}_uwsgi_nginx.conf"
 
 # Supervisor
-# TODO Allow for multiple supervisord configurations
-supervisor_configs:
-#   - mailsink_supervisor.conf
-   - rookeries_supervisor.conf
+supervisor_app_config: "{{ app_name }}_supervisor.conf"
 
 # UWSGI
-uwsgi_venv: "{{ web_app_home }}/virtualenvs/uwsgi"
-uwsgi_config: "{{ web_app_home }}/config/uwsgi"
-uwsgi_ini: rookeries-uwsgi.ini
+uwsgi_config: "{{ web_root_path }}/config/uwsgi"
+uwsgi_app_ini: "{{ app_name }}_uwsgi.ini"
+uwsgi_port: 8001
+uwsgi_service_name: "{{ app_name }}_uwsgi"
+uwsgi_app_executable: rookeries:make_rookeries_app()

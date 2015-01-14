@@ -3,17 +3,17 @@
   apt: pkg=nginx-full state=present
   sudo: yes
 
-# TODO Look at using templated configuration
 - name: configure nginx
-  copy: src=nginx/{{ app_nginx_conf }} dest=/etc/nginx/sites-available
-
-- name: enable the copied over nginx configuration
-  file: state=link
-        src=/etc/nginx/sites-available/{{ app_nginx_conf }}
-        path=/etc/nginx/sites-enabled/{{ app_nginx_conf }}
+  template: src=nginx/app_uwsgi_nginx.conf dest=/etc/nginx/sites-available/{{ nginx_app_conf }}
   sudo: yes
 
-- name: disable the default page configuration
+- name: link to enable nginx configuration
+  file: state=link
+        src=/etc/nginx/sites-available/{{ nginx_app_conf }}
+        path=/etc/nginx/sites-enabled/{{ nginx_app_conf }}
+  sudo: yes
+
+- name: disable default configuration
   file: state=absent path=/etc/nginx/sites-enabled/default
   sudo: yes
 
@@ -21,7 +21,7 @@
   service: name=nginx state=restarted
   sudo: yes
 
-- name: set permissions on nginx config + log directories
+- name: set nginx directories permissions
   file: path={{ item }} state=directory
         group={{ web_server_group }} mode=0755
   with_items:
@@ -31,7 +31,7 @@
       - /etc/nginx/sites-enabled
   sudo: yes
 
-- name: set permissions on nginx logs
+- name: set nginx logs permissions
   file: path=/var/log/nginx/{{ item }} state=file
         owner={{ web_server_group }} group={{ web_server_group }} mode=0644
   with_items:
