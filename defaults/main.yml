@@ -2,7 +2,7 @@
 # defaults file for ansible-nginx-uwsgi-supervisor
 
 # Web root paths + app name + home
-app_name: rookeries
+app_name: app
 web_root_path: /srv/www
 web_server_group: www-data
 app_home: "{{ web_root_path }}/{{ app_name }}_webapp"
@@ -13,4 +13,4 @@ nginx_app_static: "{{ app_home }}/{{ app_name }}/static/"
 
 # UWSGI
 uwsgi_port: 8001
-uwsgi_app_executable: rookeries:make_rookeries_app()
+uwsgi_app_executable: "app:make_wsgi_app()"

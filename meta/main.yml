@@ -1,16 +1,9 @@
 ---
 galaxy_info:
   author: Dorian Pula
-  description: NGINX UWSGI and supervisor role
+  description: Elegant NGINX, UWSGI and supervisor role
   company: Amber Penguin Software
-  # Some suggested licenses:
-  # - BSD (default)
-  # - MIT
-  # - GPLv2
-  # - GPLv3
-  # - Apache
-  # - CC-BY
-  license: AGPLv3
+  license: BSD
   min_ansible_version: 1.6
   platforms:
   - name: Ubuntu
