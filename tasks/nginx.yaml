@@ -16,10 +16,7 @@
 - name: disable default configuration
   file: state=absent path=/etc/nginx/sites-enabled/default
   sudo: yes
-
-- name: restart nginx
-  service: name=nginx state=restarted
-  sudo: yes
+  notify: restart nginx
 
 - name: set nginx directories permissions
   file: path={{ item }} state=directory
