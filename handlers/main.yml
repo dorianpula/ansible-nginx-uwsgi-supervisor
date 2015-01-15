@@ -1,2 +1,10 @@
 ---
 # handlers file for ansible-nginx-uwsgi-supervisor
+- name: restart uwsgi app
+  supervisorctl: name={{ uwsgi_service_name }} state=restarted config=/etc/supervisor/supervisor.conf
+  sudo: yes
+
+- name: restart supervisord
+  service: name=supervisor state=restarted
+  sudo: yes
+

@@ -6,7 +6,3 @@
 - name: configure app on uwsgi server
   template: src=uwsgi/app_uwsgi.ini dest={{ uwsgi_config }}/{{ uwsgi_app_ini }}
   sudo: yes
-
-- name: restart uwsgi server
-  supervisorctl: name=uwsgi state=restarted config=/etc/supervisor/supervisor.conf
-  sudo: yes
