@@ -1,44 +1,54 @@
-Role Name
-=========
+ansible-nginx-uwsgi-supervisor
+==============================
 
-A brief description of the role goes here.
+An Ansible role to setup and manage a UWSGI app via supervisor, and served up on a NGINX web server.  The goal of this
+role is to make deployment of WSGI app as a simple and sane as possible.  Additionally the role provides sane defaults
+for logging and folder structure setup.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the 
-role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+- aptitude or python-apt (required by apt tasks)
+- python > 2.5 (required by ini_file tasks)
+
+This role is designed to work against a modern Ubuntu system.  (Tested on Ubuntu 13.10 and 14.04)  It should 
+theoretically work on older versions of Ubuntu or Debian based systems.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in 
+TODO - A description of the settable variables for this role should go here, including any variables that are in 
 defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables 
 that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as 
 well.
-
-Dependencies
-------------
-
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be 
-set for other roles, or variables that are used from other roles.
 
 Example Playbook
 ----------------
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for 
 users too:
-
+         
     - hosts: servers
+      sudo: yes
+    
       roles:
-         - { role: username.rolename, x: 42 }
+          - { role: ansible-nginx-uwsgi-supervisor, 
+              app_name: app, 
+              nginx_hostname: app.domain.net,
+              uwsgi_port: 8080, 
+              uwsgi_app_executable: "app.build:make_wsgi_app()" }
 
 License
 -------
 
-AGPL v3
+BSD
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Dorian Pula
+email: dorian.pula at amber-penguin.software.ca
+www: http://amber-penguin-software.ca
+
+This role is a spin-off of the technology developed for the Rookeries project: 
+http://rookeries.amber-penguin-software.ca/
