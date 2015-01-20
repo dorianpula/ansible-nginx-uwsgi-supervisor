@@ -12,5 +12,5 @@ nginx_hostname: localhost
 nginx_app_static: "{{ app_home }}/{{ app_name }}/static/"
 
 # UWSGI
-uwsgi_port: 8001
+uwsgi_port: 8000
 uwsgi_app_executable: "app:make_wsgi_app()"
