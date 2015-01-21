@@ -17,42 +17,81 @@ theoretically work on older versions of Ubuntu or Debian based systems.
 Role Variables
 --------------
 
-### Default Variables
+There are a few crucial variables that you need to configure for your particular WSGI powered app.  They are broken up
+into sections and described below:
 
-TODO - Explanation
+### App Settings
 
-# Web root paths + app name + home
-app_name: app
-web_root_path: /srv/www
-web_server_group: www-data
-app_home: "{{ web_root_path }}/{{ app_name }}_webapp"
+- app_name:
+    - The name of WSGI app to manage via this role.
+    - Used as a prefix through out the role.
+- app_root_path:
+    - The path to the root folder of the app.
+    - Default: {{ web_root_path }}/{{ app_name }}_webapp"
 
-# NGINX
-nginx_hostname: localhost
-nginx_app_static: "{{ app_home }}/{{ app_name }}/static/"
+### NGINX
 
-# UWSGI
-uwsgi_port: 8001
-uwsgi_app_executable: "app:make_wsgi_app()"
+- app_nginx_hostname:
+    - The DNS hostname that the application serves.
+    - Default: localhost
+- app_nginx_app_static: 
+    - The path to the static elements of the site (templates, CSS, images, etc.)
+    - Default: app_root_path/app_name/static/
 
+### UWSGI
+
+- app_uwsgi_port: 
+    - The port number that the WSGI runs on and accepts requests forwarded from NGINX.
+    - Default: 8001
+- app_uwsgi_executable:
+    - The method executed by UWSGI to create a WSGI running app.  Usually a WSGI factory method or module in the app.
+    - Default: app:make_wsgi_app()
+
+### General Web:
+
+These variables are not as crucial to configure.  They do give good defaults for configuring the system in a consistent,
+POSIX/LSB-friendly and user-friendly manner.  See the section on Default File Structure for more details.
+
+- web_root_path:
+    - The root of the entire web app structure include configuration and logging.
+    - Default: /srv/www
+- web_server_group:
+    - The user group responsible for starting, stopping and managing the web and app servers on the target machine. 
+    - Default: www-data
 
 ### Main (Internal) Variables
 
 The following variables are part of the internals of the role.  However if you really want to, you can tweak them to 
 work with your setup:
 
-- web_user: The non-root user who is allowed to control web + app servers on the target machine.
-    (Default: current user)
-- virtualenv_root: The common root directory of Python virtual environments associated with running the UWSGI app + 
-    server.  (Default: /srv/www/virtualenvs/)
-- uwsgi_venv: The virtual environment where UWSGI is installed.  (Default: virtualenv_root/uwsgi)
-- app_venv: The virtual environment where the dependencies of the WSGI app is installed.  
-    (Default: virtualenv_root/app_name)
-- nginx_app_conf: The filename of the NGINX configuration for the app.  (Default: app_name_uwsgi_nginx.conf)
-- supervisor_app_config: The filename of the supervisor configuration for the app.  (Default: app_name_supervisor.conf)
-- uwsgi_config: The path to the UWSGI configurations.  (Default: /srv/www/config/uwsgi)
-- uwsgi_app_ini: The filename of the UWSGI INI configuration for the app. (Default: app_name_uwsgi.ini)
-- uwsgi_service_name: The name of the UWSGI setup for the app according to supervisor.  (Default: app_name_uwsgi)
+- web_user: 
+    - The non-root user who is allowed to control web + app servers on the target machine.
+    - Default: current user
+- virtualenv_root_path: 
+    - The common root directory of Python virtual environments associated with running the 
+    UWSGI app + server.  
+    - Default: /srv/www/virtualenvs/
+- uwsgi_venv:
+    - The virtual environment where UWSGI is installed.
+    - Default: virtualenv_root/uwsgi
+- app_venv: 
+    - The virtual environment where the dependencies of the WSGI app is installed.  
+    - Default: virtualenv_root/app_name
+- nginx_app_conf: 
+    - The filename of the NGINX configuration for the app.
+    - Default: app_name_uwsgi_nginx.conf
+- supervisor_app_config:
+    - The filename of the supervisor configuration for the app.  
+    - Default: app_name_supervisor.conf
+- uwsgi_config_path: 
+    - The path to the UWSGI configurations.
+    - Default: /srv/www/config/uwsgi
+- uwsgi_app_ini: 
+    - The filename of the UWSGI INI configuration for the app. 
+    - Default: app_name_uwsgi.ini
+- uwsgi_service_name: 
+    - The name of the UWSGI setup for the app according to supervisor.  
+    - Default: app_name_uwsgi
 
 Example Playbook
 ----------------
@@ -66,10 +105,13 @@ app_name, nginx_hostname and uwsgi_app_executable parameters especially.
       roles:
           - { role: ansible-nginx-uwsgi-supervisor, 
               app_name: app, 
-              nginx_hostname: app.domain.net,
-              uwsgi_port: 8080, 
-              uwsgi_app_executable: "app.build:make_wsgi_app()" }
-              
+              app_nginx_hostname: app.domain.net,
+              app_uwsgi_port: 8080, 
+              app_uwsgi_executable: "app.build:make_wsgi_app()" }
+
+A comprehensive example can be found in the [ansible-rookeries role] 
+(https://bitbucket.org/dorianpula/ansible-rookeries) that uses this role as a base to deploy a Flask-based webapp.
+
 Default File Structure
 ----------------------
 
@@ -100,8 +142,9 @@ Author Information
 ------------------
 
 Dorian Pula
+
+- twitter: @dorianpula
 - email: dorian.pula at amber-penguin.software.ca
 - www: http://amber-penguin-software.ca
 
-This role is a spin-off of the technology developed for the [Rookeries project]: 
-http://rookeries.amber-penguin-software.ca/
+This role is a spin-off of the technology developed for the [Rookeries project] (http://rookeri.es/)

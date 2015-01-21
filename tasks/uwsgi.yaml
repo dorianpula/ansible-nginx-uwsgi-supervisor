@@ -4,5 +4,5 @@
   sudo: yes
 
 - name: configure app on uwsgi server
-  template: src=uwsgi/app_uwsgi.ini dest={{ uwsgi_config }}/{{ uwsgi_app_ini }}
+  template: src=uwsgi/app_uwsgi.ini dest={{ uwsgi_config_path }}/{{ uwsgi_app_ini }}
   sudo: yes

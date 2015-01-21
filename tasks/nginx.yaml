@@ -4,13 +4,13 @@
   sudo: yes
 
 - name: configure nginx
-  template: src=nginx/app_uwsgi_nginx.conf dest=/etc/nginx/sites-available/{{ nginx_app_conf }}
+  template: src=nginx/app_uwsgi_nginx.conf dest=/etc/nginx/sites-available/{{ nginx_app_config }}
   sudo: yes
 
 - name: link to enable nginx configuration
   file: state=link
-        src=/etc/nginx/sites-available/{{ nginx_app_conf }}
-        path=/etc/nginx/sites-enabled/{{ nginx_app_conf }}
+        src=/etc/nginx/sites-available/{{ nginx_app_config }}
+        path=/etc/nginx/sites-enabled/{{ nginx_app_config }}
   sudo: yes
 
 - name: disable default configuration
