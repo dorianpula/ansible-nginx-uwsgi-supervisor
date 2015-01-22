@@ -148,3 +148,12 @@ Dorian Pula
 - www: http://amber-penguin-software.ca
 
 This role is a spin-off of the technology developed for the [Rookeries project] (http://rookeri.es/)
+
+
+Repositories
+------------
+
+- Main: https://bitbucket.org/dorianpula/ansible-nginx-uwsgi-supervisor
+    - All development and issues are worked on this repo.
+- Clone: https://github.com/dorianpula/ansible-nginx-uwsgi-supervisor
+    - A clone to work with Ansible Galaxy and Github
