@@ -1,7 +1,7 @@
 ---
 galaxy_info:
   author: Dorian Pula
-  description: Elegant NGINX, UWSGI and supervisor role
+  description: An elegant NGINX, UWSGI and supervisor Ansible role
   company: Amber Penguin Software
   license: BSD
   min_ansible_version: 1.6

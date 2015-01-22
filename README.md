@@ -1,4 +1,4 @@
-ansible-nginx-uwsgi-supervisor
+Ansible nginx-uwsgi-supervisor
 ==============================
 
 An Ansible role to setup and manage a UWSGI app via supervisor, and served up on a NGINX web server.  The goal of this
@@ -27,7 +27,7 @@ into sections and described below:
     - Used as a prefix through out the role.
 - app_root_path:
     - The path to the root folder of the app.
-    - Default: {{ web_root_path }}/{{ app_name }}_webapp"
+    - Default: web_root_path/app_name_webapp
 
 ### NGINX
 
@@ -103,13 +103,13 @@ app_name, nginx_hostname and uwsgi_app_executable parameters especially.
       sudo: yes
     
       roles:
-          - { role: ansible-nginx-uwsgi-supervisor, 
+          - { role: nginx-uwsgi-supervisor, 
               app_name: app, 
               app_nginx_hostname: app.domain.net,
               app_uwsgi_port: 8080, 
               app_uwsgi_executable: "app.build:make_wsgi_app()" }
 
-A comprehensive example can be found in the [ansible-rookeries role] 
+A comprehensive example can be found in the [Ansible rookeries role] 
 (https://bitbucket.org/dorianpula/ansible-rookeries) that uses this role as a base to deploy a Flask-based webapp.
 
 Default File Structure
