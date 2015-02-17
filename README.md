@@ -14,6 +14,29 @@ Requirements
 This role is designed to work against a modern Ubuntu system.  (Tested on Ubuntu 13.10 and 14.04)  It should 
 theoretically work on older versions of Ubuntu or Debian based systems.
 
+Example Playbook
+----------------
+
+The simplest way to include the role in your playbook is to copy the below configuration.  Remember to modify the 
+app_name, nginx_hostname and uwsgi_app_executable parameters especially.
+         
+    - hosts: servers
+      sudo: yes
+      roles:
+          - { role: nginx-uwsgi-supervisor,
+              app_name: app,
+              app_nginx_hostname: app.domain.net,
+              app_uwsgi_port: 8080,
+              app_uwsgi_executable: "app.build:make_wsgi_app()" }
+              
+The role itself is very configurable.  For exaple, if you prefer the location of the web application to refer to the 
+domain name rather than the default root path,  then simply override the app_root_path variable with something like:
+
+    app_rooth_path: "{{ web_root_path }}/{{ app_nginx_hostname }}"
+
+A comprehensive example can be found in the [Ansible rookeries role] 
+(https://bitbucket.org/dorianpula/ansible-rookeries) that uses this role as a base to deploy a Flask-based webapp.
+
 Role Variables
 --------------
 
@@ -59,7 +82,29 @@ POSIX/LSB-friendly and user-friendly manner.  See the section on Default File St
     - The user group responsible for starting, stopping and managing the web and app servers on the target machine. 
     - Default: www-data
 
-### Main (Internal) Variables
+Default File Structure
+----------------------
+
+By default the role will organize files in the following directory structure:
+
+    /srv/www
+    ├── config
+    │   ├── nginx -> /etc/nginx
+    │   ├── supervisor -> /etc/supervisor
+    │   └── uwsgi
+    ├── logs
+    │   ├── nginx -> /var/log/nginx
+    │   ├── supervisor -> /var/log/supervisor
+    │   └── uwsgi
+    ├── app_webapp
+    │   ├── requirements.txt
+    │   └── app
+    └── virtualenvs
+        ├── app
+        └── uwsgi
+
+Internal Variables
+------------------
 
 The following variables are part of the internals of the role.  However if you really want to, you can tweak them to 
 work with your setup:
@@ -93,46 +138,6 @@ work with your setup:
     - The name of the UWSGI setup for the app according to supervisor.  
     - Default: app_name_uwsgi
 
-Example Playbook
-----------------
-
-The simplest way to include the role in your playbook is to copy the below configuration.  Remember to modify the 
-app_name, nginx_hostname and uwsgi_app_executable parameters especially.
-         
-    - hosts: servers
-      sudo: yes
-    
-      roles:
-          - { role: nginx-uwsgi-supervisor, 
-              app_name: app, 
-              app_nginx_hostname: app.domain.net,
-              app_uwsgi_port: 8080, 
-              app_uwsgi_executable: "app.build:make_wsgi_app()" }
-
-A comprehensive example can be found in the [Ansible rookeries role] 
-(https://bitbucket.org/dorianpula/ansible-rookeries) that uses this role as a base to deploy a Flask-based webapp.
-
-Default File Structure
-----------------------
-
-By default the role will organize files in the following directory structure:
-
-    /srv/www
-    ├── config
-    │   ├── nginx -> /etc/nginx
-    │   ├── supervisor -> /etc/supervisor
-    │   └── uwsgi
-    ├── logs
-    │   ├── nginx -> /var/log/nginx
-    │   ├── supervisor -> /var/log/supervisor
-    │   └── uwsgi
-    ├── app_webapp
-    │   ├── requirements.txt
-    │   └── app
-    └── virtualenvs
-        ├── app
-        └── uwsgi
-
 License
 -------
 
@@ -147,7 +152,7 @@ Dorian Pula
 - email: dorian.pula at amber-penguin.software.ca
 - www: http://amber-penguin-software.ca
 
-This role is a spin-off of the technology developed for the [Rookeries project] (http://rookeri.es/)
+This role is a spin-off of the technology developed for the [Rookeries project] (http://rookeries.org/)
 
 
 Repositories
