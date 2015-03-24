@@ -15,3 +15,4 @@ app_nginx_static_path: "{{ app_root_path }}/{{ app_name }}/static/"
 # UWSGI
 app_uwsgi_port: 8000
 app_uwsgi_executable: "app:make_wsgi_app()"
+app_uwsgi_envs: {}

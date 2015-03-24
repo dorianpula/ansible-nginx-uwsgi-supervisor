@@ -69,6 +69,9 @@ into sections and described below:
 - app_uwsgi_executable:
     - The method executed by UWSGI to create a WSGI running app.  Usually a WSGI factory method or module in the app.
     - Default: app:make_wsgi_app()
+- app_uwsgi_envs:
+    - (Optional) A dictionary of environment variables to pass into an app.
+    - Default: empty dictionary
 
 ### General Web:
 
