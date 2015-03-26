@@ -18,7 +18,7 @@ Example Playbook
 ----------------
 
 The simplest way to include the role in your playbook is to copy the below configuration.  Remember to modify the 
-app_name, nginx_hostname and uwsgi_app_executable parameters especially.
+app_name, app_nginx_hostname and app_uwsgi_executable parameters especially.
          
     - hosts: servers
       sudo: yes
