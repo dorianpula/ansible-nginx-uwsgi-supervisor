@@ -12,4 +12,7 @@
 
 - name: install virtualenv
   sudo: yes
-  pip: name=virtualenv
+  pip: name={{ item }} state=present extra_args='--upgrade'
+  with_items:
+    - pip
+    - virtualenv
