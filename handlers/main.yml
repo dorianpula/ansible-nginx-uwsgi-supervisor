@@ -4,6 +4,14 @@
   supervisorctl: name={{ uwsgi_app_service_name }} state=restarted config=/etc/supervisor/supervisor.conf
   sudo: yes
 
+- name: start supervisord
+  service: name=supervisor state=started
+  sudo: yes
+
+- name: start supervisord
+  service: name=supervisor state=started
+  sudo: yes
+
 - name: restart supervisord
   service: name=supervisor state=restarted
   sudo: yes

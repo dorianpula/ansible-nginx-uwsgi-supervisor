@@ -22,4 +22,4 @@
 - name: upload supervisor configuration to web server home
   template: src=supervisor/app_supervisor.conf dest=/etc/supervisor/conf.d/{{ supervisor_app_config }}
   sudo: yes
-  notify: restart supervisord
+  notify: start supervisord
