@@ -4,11 +4,6 @@
 # User
 web_user: "{{ ansible_env.SUDO_USER }}"
 
-# Virtualenvs
-virtualenv_root_path: "{{ web_root_path }}/virtualenvs"
-uwsgi_venv: "{{ virtualenv_root_path }}/uwsgi"
-app_venv: "{{ virtualenv_root_path }}/{{ app_name }}"
-
 # NGINX
 nginx_app_config: "{{ app_name }}_uwsgi_nginx.conf"
 
@@ -16,6 +11,7 @@ nginx_app_config: "{{ app_name }}_uwsgi_nginx.conf"
 supervisor_app_config: "{{ app_name }}_supervisor.conf"
 
 # UWSGI
+uwsgi_venv: "{{ virtualenv_root_path }}/uwsgi"
 uwsgi_config_path: "{{ web_root_path }}/config/uwsgi"
 uwsgi_app_ini: "{{ app_name }}_uwsgi.ini"
 uwsgi_app_service_name: "{{ app_name }}_uwsgi"

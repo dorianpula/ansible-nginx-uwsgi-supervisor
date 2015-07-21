@@ -72,8 +72,19 @@ into sections and described below:
 - app_uwsgi_envs:
     - (Optional) A dictionary of environment variables to pass into an app.
     - Default: empty dictionary
+    
+### Virtual Environments
 
-### General Web:
+**NEW** - On occassion it is necessary to change the setup of the virtual environments on a system.
+
+- virtualenv_root_path: 
+    - Path to where the virtual environments are installed
+    - Default: web_root_path/virtualenvs
+- app_venv:
+    - Path to the application's virtualenv.
+    - Default: virtualenv_root_path/app_name
+
+### General Web
 
 These variables are not as crucial to configure.  They do give good defaults for configuring the system in a consistent,
 POSIX/LSB-friendly and user-friendly manner.  See the section on Default File Structure for more details.

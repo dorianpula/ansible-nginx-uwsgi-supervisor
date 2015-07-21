@@ -16,3 +16,7 @@ app_nginx_static_path: "{{ app_root_path }}/{{ app_name }}/static/"
 app_uwsgi_port: 8000
 app_uwsgi_executable: "app:make_wsgi_app()"
 app_uwsgi_envs: {}
+
+# Virtualenvs
+virtualenv_root_path: "{{ web_root_path }}/virtualenvs"
+app_venv: "{{ virtualenv_root_path }}/{{ app_name }}"
