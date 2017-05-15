@@ -1,8 +1,8 @@
 ---
 - name: install uwsgi server
   pip: name=uwsgi virtualenv={{ uwsgi_venv }} version=2.0
-  sudo: yes
+  become: yes
 
 - name: configure app on uwsgi server
   template: src=uwsgi/app_uwsgi.ini dest={{ uwsgi_config_path }}/{{ uwsgi_app_ini }}
-  sudo: yes
+  become: yes

@@ -21,7 +21,7 @@ The simplest way to include the role in your playbook is to copy the below confi
 app_name, app_nginx_hostname and app_uwsgi_executable parameters especially.
          
     - hosts: servers
-      sudo: yes
+      become: yes
       roles:
           - { role: nginx-uwsgi-supervisor,
               app_name: app,
