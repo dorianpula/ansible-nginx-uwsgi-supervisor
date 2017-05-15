@@ -1,6 +1,14 @@
 ---
+- name: install build utilities
+  apt: pkg=build-essential state=present
+  become: yes
+
+- name: install python-dev package
+  apt: pkg=python-dev state=present
+  become: yes
+
 - name: install uwsgi server
-  pip: name=uwsgi virtualenv={{ uwsgi_venv }} version=2.0
+  pip: name=uwsgi virtualenv={{ uwsgi_venv }} version=2.0.15
   become: yes
 
 - name: configure app on uwsgi server
