@@ -1,21 +1,21 @@
 ---
 - name: install nginx webserver
   apt: pkg=nginx-full state=present
-  sudo: yes
+  become: yes
 
 - name: configure nginx
   template: src=nginx/app_uwsgi_nginx.conf dest=/etc/nginx/sites-available/{{ nginx_app_config }}
-  sudo: yes
+  become: yes
 
 - name: link to enable nginx configuration
   file: state=link
         src=/etc/nginx/sites-available/{{ nginx_app_config }}
         path=/etc/nginx/sites-enabled/{{ nginx_app_config }}
-  sudo: yes
+  become: yes
 
 - name: disable default configuration
   file: state=absent path=/etc/nginx/sites-enabled/default
-  sudo: yes
+  become: yes
   notify: restart nginx
 
 - name: set nginx directories permissions
@@ -26,7 +26,7 @@
       - /etc/nginx
       - /etc/nginx/sites-available
       - /etc/nginx/sites-enabled
-  sudo: yes
+  become: yes
 
 - name: set nginx logs permissions
   file: path=/var/log/nginx/{{ item }} state=file
@@ -34,4 +34,4 @@
   with_items:
       - access.log
       - error.log
-  sudo: yes
+  become: yes

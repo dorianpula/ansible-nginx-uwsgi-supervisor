@@ -1,7 +1,7 @@
 ---
 - name: install supervisord
   apt: name=supervisor state=present
-  sudo: yes
+  become: yes
 
 - name: set permissions on supervisor config and log directories
   file: path={{ item }} group={{ web_server_group }} state=directory mode=0755
@@ -9,7 +9,7 @@
      - /etc/supervisor
      - /etc/supervisor/conf.d
      - /var/log/supervisor
-  sudo: yes
+  become: yes
 
 - name: modify supervisor configuration
   ini_file: dest=/etc/supervisor/supervisord.conf section=unix_http_server
@@ -17,9 +17,9 @@
   with_dict:
       chmod: "0770"
       chown: root:{{ web_server_group }}
-  sudo: yes
+  become: yes
 
 - name: upload supervisor configuration to web server home
   template: src=supervisor/app_supervisor.conf dest=/etc/supervisor/conf.d/{{ supervisor_app_config }}
-  sudo: yes
+  become: yes
   notify: start supervisord

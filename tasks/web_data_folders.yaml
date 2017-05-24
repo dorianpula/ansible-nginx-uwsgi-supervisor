@@ -2,7 +2,7 @@
 - name: setup webapp deployment folder with the correct permissions
   file: path={{ web_root_path }} state=directory
         owner={{ web_server_group }} group={{ web_server_group }} mode=0774
-  sudo: yes
+  become: yes
 
 - name: setup webapp deployment configuration + log folders with the correct permissions
   file: path={{ web_root_path }}/{{ item }} state=directory
@@ -12,7 +12,7 @@
       - config/uwsgi
       - logs
       - virtualenvs
-  sudo: yes
+  become: yes
 
 - name: link remote folders with webapp home folder
   file: state=link
@@ -24,8 +24,8 @@
       /etc/supervisor: config/supervisor
       /var/log/nginx: logs/nginx
       /var/log/supervisor: logs/supervisor
-  sudo: yes
+  become: yes
 
 - name: add user to webserver group
   user: name={{ web_user }} append=yes groups={{ web_server_group }}
-  sudo: yes
+  become: yes
